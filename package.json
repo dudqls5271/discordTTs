@@ -1,0 +1,23 @@
+{
+  "name": "tts",
+  "version": "0.0.1",
+  "description": "discord TTS Boot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dudqls5271/discordTTs.git"
+  },
+  "author": "youngbin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dudqls5271/discordTTs/issues"
+  },
+  "homepage": "https://github.com/dudqls5271/discordTTs#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0"
+  }
+}
