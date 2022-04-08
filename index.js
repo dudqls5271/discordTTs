@@ -21,6 +21,20 @@ client.on('ready', () => {
 let voiceConnection;
 let audioPlayer=new AudioPlayer();
 
+client.once('ready', () => {
+    console.log('Bot is ready!')
+
+    setInterval(() => {
+        const statuses = [
+            '= 할말 (5글자 이상 사용가능 원인 찾는중)'
+        ]
+
+        const status = statuses[Math.floor(Math.random() * statuses.length)]
+        client.user.setActivity(status, {type: "PLAYING"})
+    }, 10000) //1000 = 1초 5000 = 5초 10000 = 10초
+})
+
+
 client.on("messageCreate", async (msg)=>{
 	
 	const user_mas = msg.content;
@@ -29,7 +43,7 @@ client.on("messageCreate", async (msg)=>{
 				const user_msg_Str = user_mas.substr(2, user_mas.length);
 				console.log(user_msg_Str);
 				const stream=discordTTS.getVoiceStream(user_msg_Str);
-				console.log("전달 완료");
+				// console.log("전달 완료");
 				const audioResource=createAudioResource(stream, {inputType: StreamType.Arbitrary, inlineVolume:true});
 				if(!voiceConnection || voiceConnection?.status===VoiceConnectionStatus.Disconnected){
 					voiceConnection = joinVoiceChannel({
@@ -43,7 +57,7 @@ client.on("messageCreate", async (msg)=>{
 				if(voiceConnection.status===VoiceConnectionStatus.Connected){
 					voiceConnection.subscribe(audioPlayer);
 					audioPlayer.play(audioResource);
-					console.log(audioResource);
+					// console.log(audioResource);
 				}
 
 			}
