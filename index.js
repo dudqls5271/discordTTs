@@ -36,16 +36,31 @@ client.once('ready', () => {
 
 
 client.on("messageCreate", async (msg)=>{
+	const connection = getVoiceConnection(msg.guildId);
 	const user_mas = msg.content;
+
+	var time = 200;
+
+	var x = setInterval(function() {
+		time--;
+
+		if(time == 0) {
+			getVoiceConnection(msg.guildId).destroy();
+			voiceConnection = null;
+			clearInterval(x);
+		}
+		console.log(time);
+	}, 1000);
+
 	for (var i = 0; i < user_mas.length; i++) {
 		if(user_mas[i] == "=") {
 			const user_msg_Str = user_mas.substr(2, user_mas.length);
-			console.log(user_msg_Str);
-			console.log("voiceConnection : " + voiceConnection);
+			// console.log(user_msg_Str);
+			// console.log("voiceConnection : " + voiceConnection);
 			const stream=discordTTS.getVoiceStream(user_msg_Str);
 			const audioResource=createAudioResource(stream, {inputType: StreamType.Arbitrary, inlineVolume:true});
 			if(!voiceConnection || voiceConnection?.status===VoiceConnectionStatus.Disconnected){
-				console.log("전달 완료");
+				// console.log("전달 완료");
 				voiceConnection = joinVoiceChannel({
 					channelId: msg.member.voice.channelId,
 					guildId: msg.guildId,
@@ -57,13 +72,14 @@ client.on("messageCreate", async (msg)=>{
 			if(voiceConnection.status===VoiceConnectionStatus.Connected){
 				voiceConnection.subscribe(audioPlayer);
 				audioPlayer.play(audioResource);
+				time = 200;
 				// console.log(audioResource);
 			}
 
 		}
 	}
-	const connection = getVoiceConnection(msg.guildId);
-	if(user_mas === "나가") {
+
+	if(user_mas === "= 멜 퐁 나 가") {
 		connection.destroy();
 		voiceConnection = null;
 	}
