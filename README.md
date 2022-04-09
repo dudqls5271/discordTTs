@@ -16,9 +16,7 @@ discord에서 마이크 / 말을 못하는 사람들을 위한 TTS Bot
 
 ## IDE
 ---
-<img src="https://img.shields.io/badge/Visual Studio Code
--007ACC?style=flat-square&logo=Visual Studio Code
-&logoColor=white"/></a> &nbsp;
+<img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat-square&logo=Visual Studio Code&logoColor=white"/></a> &nbsp;
 
 ## OS
 ---
