@@ -79,7 +79,7 @@ client.on("messageCreate", async (msg)=>{
 		}
 	}
 
-	if(user_mas === "= 멜 퐁 나 가") {
+	if(user_mas === "== command out") {
 		connection.destroy();
 		voiceConnection = null;
 	}
