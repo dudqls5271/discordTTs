@@ -22,12 +22,8 @@ discord에서 마이크 / 말을 못하는 사람들을 위한 TTS Bot
 
 ## OS
 ---
-<img src="https://img.shields.io/badge/macOS
--000000?style=flat-square&logo=macOS
-&logoColor=white"/></a> &nbsp;
-<img src="https://img.shields.io/badge/Windows
--0078D6?style=flat-square&logo=Windows
-&logoColor=white"/></a> &nbsp;
+<img src="https://img.shields.io/badge/macOS-000000?style=flat-square&logo=macOS&logoColor=white"/></a> &nbsp;
+<img src="https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=Windows&logoColor=white"/></a> &nbsp;
 
 ## 사용법
 ---
