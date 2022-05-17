@@ -21,57 +21,97 @@ client.on('ready', () => {
 let voiceConnection = null;
 let audioPlayer=new AudioPlayer();
 
+// setInterval(() => {
+// 	console.log("Hello Semadi");
+// }, 3000);
+
 client.once('ready', () => {
     console.log('Bot is ready!')
 
     setInterval(() => {
         const statuses = [
-            '= 할말 (5글자 이상 사용가능 원인 찾는중)'
+            'TTS기능 멈춰뒀어요!'
         ]
-
         const status = statuses[Math.floor(Math.random() * statuses.length)]
         client.user.setActivity(status, {type: "PLAYING"})
     }, 1000) //1000 = 1초 5000 = 5초 10000 = 10초
 })
 
 client.on("messageCreate", async (msg)=>{
-	const connection = getVoiceConnection(msg.guildId);
-	const user_mas = msg.content;
+	const usermsg = msg.content;
+	const userKey = "";
+	const userValue = "";
 
-	function timeOut() {
-		getVoiceConnection(msg.guildId).destroy();
-		voiceConnection = null
-	}
+	const fs = require('fs');
 
-	setInterval(timeOut, 3000);
+	const dataRead = fs.readFileSync('./command.json');
+	const dataJSON = dataRead.toString();
+	const command = JSON.parse(dataJSON);
+	const commandFile = require('./command.json');
 
-	for (var i = 0; i < user_mas.length; i++) {
-		if(user_mas[i] == "=") {
-			const user_msg_Str = user_mas.substr(2, user_mas.length);
-			const stream=discordTTS.getVoiceStream(user_msg_Str);
-			const audioResource=createAudioResource(stream, {inputType: StreamType.Arbitrary, inlineVolume:true});
-			if(!voiceConnection || voiceConnection?.status===VoiceConnectionStatus.Disconnected){
-				voiceConnection = joinVoiceChannel({
-					channelId: msg.member.voice.channelId,
-					guildId: msg.guildId,
-					adapterCreator: msg.guild.voiceAdapterCreator,
-				});
-				voiceConnection=await entersState(voiceConnection, VoiceConnectionStatus.Connecting, 5_000);
-			}
-			
-			if(voiceConnection.status===VoiceConnectionStatus.Connected){
-				voiceConnection.subscribe(audioPlayer);
-				audioPlayer.play(audioResource);
-			}
+	var keys = Object.keys(commandFile); 
 
+	for (var i=0; i<keys.length; i++) {
+		var key = keys[i];
+		if(usermsg === key) {
+			msg.channel.send(commandFile[key]); 
 		}
 	}
+	
+	if(usermsg.match('/comadd') == '/comadd') {
+		const commandInput = usermsg.substr(7).replace(/ /g,"").split(':');
+		console.log(commandInput);
 
-	if(user_mas === "== command out") {
-		connection.destroy();
-		voiceConnection = null;
+		const userInput =  commandInput[0];
+		command[userInput] = commandInput[1];
+		const updateJSON = JSON.stringify(command);
+
+		fs.writeFileSync('./command.json', updateJSON);
+		fs.close();
 	}
+
+	process.on('uncaughtException', function(error) {
+		console.log('command error');
+	});
 	
 });
+
+// client.on("messageCreate", async (msg)=>{
+// 	const connection = getVoiceConnection(msg.guildId);
+// 	const user_mas = msg.content;
+// 	for (var i = 0; i < user_mas.length; i++) {
+// 		if(user_mas[i] == "=") {
+// 			const user_msg_Str = user_mas.substr(2, user_mas.length);
+// 			const stream=discordTTS.getVoiceStream(user_msg_Str);
+// 			const audioResource=createAudioResource(stream, {inputType: StreamType.Arbitrary, inlineVolume:true});
+// 			if(!voiceConnection || voiceConnection?.status===VoiceConnectionStatus.Disconnected){
+// 				voiceConnection = joinVoiceChannel({
+// 					channelId: msg.member.voice.channelId,
+// 					guildId: msg.guildId,
+// 					adapterCreator: msg.guild.voiceAdapterCreator,
+// 				});
+// 				voiceConnection=await entersState(voiceConnection, VoiceConnectionStatus.Connecting, 5_000);
+// 			}
+			
+// 			if(voiceConnection.status===VoiceConnectionStatus.Connected){
+// 				voiceConnection.subscribe(audioPlayer);
+// 				audioPlayer.play(audioResource);
+// 			}
+
+// 		}
+// 	}
+
+// 	if(user_mas === "== command out") {
+// 		connection.destroy();
+// 		voiceConnection = null;
+// 	}
+
+// 	process.on('uncaughtException', function(error) {
+// 		console.log('voice error');
+// 	});
+
+// });
+
+
 
 client.login(tokenMy.token);

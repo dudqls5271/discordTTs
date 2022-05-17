@@ -1,41 +1,24 @@
-const discordTTS=require("discord-tts");
-const {Client, Intents} = require("discord.js");
-const {AudioPlayer, createAudioResource, StreamType, entersState, VoiceConnectionStatus, joinVoiceChannel} = require("@discordjs/voice");
-const tokenMy= require('./token.json');
+const fs = require('fs');
+const commandFile = require('./command.json');
 
-const intents=
-[
-    Intents.FLAGS.GUILD_VOICE_STATES,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MEMBERS,
-    Intents.FLAGS.GUILDS
-];
+const dataRead = fs.readFileSync('./command.json');
+const dataJSON = dataRead.toString();
+const command = JSON.parse(dataJSON);
+console.log(command);
 
-const client = new Client({intents:intents});
-client.login(tokenMy.token);
+const userInput = "추가 한것 ";
 
-client.on("ready", () => console.log("Online"));
+command[userInput] = "test1";
 
-let voiceConnection;
-let audioPlayer=new AudioPlayer();
+const updateJSON = JSON.stringify(command);
 
-client.on("messageCreate", async (msg)=>{
-    if(msg.content=="tts")
-    {
-        const stream=discordTTS.getVoiceStream("hello text to speech world");
-        const audioResource=createAudioResource(stream, {inputType: StreamType.Arbitrary, inlineVolume:true});
-        if(!voiceConnection || voiceConnection?.status===VoiceConnectionStatus.Disconnected){
-            voiceConnection = joinVoiceChannel({
-                channelId: msg.member.voice.channelId,
-                guildId: msg.guildId,
-                adapterCreator: msg.guild.voiceAdapterCreator,
-            });
-            voiceConnection=await entersState(voiceConnection, VoiceConnectionStatus.Connecting, 5_000);
-        }
-        
-        if(voiceConnection.status===VoiceConnectionStatus.Connected){
-            voiceConnection.subscribe(audioPlayer);
-            audioPlayer.play(audioResource);
-        }
-    }
-});
+fs.writeFileSync('./command.json', updateJSON);
+
+
+var keys = Object.keys(commandFile); 
+for (var i=0; i<keys.length; i++) {
+    var key = keys[i];
+    //console.log("key : " + key + ", value : " + commandFile[key]);
+}
+
+
