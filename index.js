@@ -1,6 +1,6 @@
-const discordTTS=require("discord-tts");
+// const discordTTS=require("discord-tts");
 const {Client, Intents} = require("discord.js");
-const {getVoiceConnection, AudioPlayer, createAudioResource, StreamType, entersState, VoiceConnectionStatus, joinVoiceChannel} = require("@discordjs/voice");
+// const {getVoiceConnection, AudioPlayer, createAudioResource, StreamType, entersState, VoiceConnectionStatus, joinVoiceChannel} = require("@discordjs/voice");
 const tokenMy= require('./token.json');
 
 const intents=
@@ -18,8 +18,8 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-let voiceConnection = null;
-let audioPlayer=new AudioPlayer();
+// let voiceConnection = null;
+// let audioPlayer=new AudioPlayer();
 
 // setInterval(() => {
 // 	console.log("Hello Semadi");
@@ -36,17 +36,14 @@ client.once('ready', () => {
         client.user.setActivity(status, {type: "PLAYING"})
     }, 1000) //1000 = 1초 5000 = 5초 10000 = 10초
 })
-
 client.on("messageCreate", async (msg)=>{
 	const usermsg = msg.content;
-	const userKey = "";
-	const userValue = "";
 
-	const fs = require('fs');
+	// const fs = require('fs');
 
-	const dataRead = fs.readFileSync('./command.json');
-	const dataJSON = dataRead.toString();
-	const command = JSON.parse(dataJSON);
+	// const dataRead = fs.readFileSync('./command.json');
+	// const dataJSON = dataRead.toString();
+	// const command = JSON.parse(dataJSON);
 	const commandFile = require('./command.json');
 
 	var keys = Object.keys(commandFile); 
@@ -55,24 +52,27 @@ client.on("messageCreate", async (msg)=>{
 		var key = keys[i];
 		if(usermsg === key) {
 			msg.channel.send(commandFile[key]); 
+			// process.setMaxListeners(0);
 		}
 	}
 	
-	if(usermsg.match('/comadd') == '/comadd') {
-		const commandInput = usermsg.substr(7).replace(/ /g,"").split(':');
-		console.log(commandInput);
+	// if(usermsg.match('/comadd') == '/comadd') {
+	// 	const commandInput = usermsg.substr(7).replace(/ /g,"").split(':');
+	// 	console.log(commandInput);
 
-		const userInput =  commandInput[0];
-		command[userInput] = commandInput[1];
-		const updateJSON = JSON.stringify(command);
+	// 	const userInput =  commandInput[0];
+	// 	command[userInput] = commandInput[1];
+	// 	const updateJSON = JSON.stringify(command);
 
-		fs.writeFileSync('./command.json', updateJSON);
-		fs.close();
-	}
+	// 	fs.writeFileSync('./command.json', updateJSON);
+	// 	fs.close();
+	// 	process.setMaxListeners(0);
+	// }
 
 	process.on('uncaughtException', function(error) {
 		console.log('command error');
 	});
+	// process.setMaxListeners(0);
 	
 });
 
