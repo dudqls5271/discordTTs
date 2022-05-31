@@ -39,11 +39,11 @@ client.once('ready', () => {
 client.on("messageCreate", async (msg)=>{
 	const usermsg = msg.content;
 
-	// const fs = require('fs');
+	const fs = require('fs');
 
-	// const dataRead = fs.readFileSync('./command.json');
-	// const dataJSON = dataRead.toString();
-	// const command = JSON.parse(dataJSON);
+	const dataRead = fs.readFileSync('./command.json');
+	const dataJSON = dataRead.toString();
+	const command = JSON.parse(dataJSON);
 	const commandFile = require('./command.json');
 
 	var keys = Object.keys(commandFile); 
@@ -52,65 +52,65 @@ client.on("messageCreate", async (msg)=>{
 		var key = keys[i];
 		if(usermsg === key) {
 			msg.channel.send(commandFile[key]); 
-			// process.setMaxListeners(0);
+			process.setMaxListeners(0);
 		}
 	}
 	
-	// if(usermsg.match('/comadd') == '/comadd') {
-	// 	const commandInput = usermsg.substr(7).replace(/ /g,"").split(':');
-	// 	console.log(commandInput);
+	if(usermsg.match('/comadd') == '/comadd') {
+		const commandInput = usermsg.substr(7).replace(/ /g,"").split(':');
+		console.log(commandInput);
 
-	// 	const userInput =  commandInput[0];
-	// 	command[userInput] = commandInput[1];
-	// 	const updateJSON = JSON.stringify(command);
+		const userInput =  commandInput[0];
+		command[userInput] = commandInput[1];
+		const updateJSON = JSON.stringify(command);
 
-	// 	fs.writeFileSync('./command.json', updateJSON);
-	// 	fs.close();
-	// 	process.setMaxListeners(0);
-	// }
+		fs.writeFileSync('./command.json', updateJSON);
+		fs.close();
+		process.setMaxListeners(0);
+	}
 
 	process.on('uncaughtException', function(error) {
 		console.log('command error');
 	});
-	// process.setMaxListeners(0);
+	process.setMaxListeners(0);
 	
 });
 
-// client.on("messageCreate", async (msg)=>{
-// 	const connection = getVoiceConnection(msg.guildId);
-// 	const user_mas = msg.content;
-// 	for (var i = 0; i < user_mas.length; i++) {
-// 		if(user_mas[i] == "=") {
-// 			const user_msg_Str = user_mas.substr(2, user_mas.length);
-// 			const stream=discordTTS.getVoiceStream(user_msg_Str);
-// 			const audioResource=createAudioResource(stream, {inputType: StreamType.Arbitrary, inlineVolume:true});
-// 			if(!voiceConnection || voiceConnection?.status===VoiceConnectionStatus.Disconnected){
-// 				voiceConnection = joinVoiceChannel({
-// 					channelId: msg.member.voice.channelId,
-// 					guildId: msg.guildId,
-// 					adapterCreator: msg.guild.voiceAdapterCreator,
-// 				});
-// 				voiceConnection=await entersState(voiceConnection, VoiceConnectionStatus.Connecting, 5_000);
-// 			}
+client.on("messageCreate", async (msg)=>{
+	const connection = getVoiceConnection(msg.guildId);
+	const user_mas = msg.content;
+	for (var i = 0; i < user_mas.length; i++) {
+		if(user_mas[i] == "=") {
+			const user_msg_Str = user_mas.substr(2, user_mas.length);
+			const stream=discordTTS.getVoiceStream(user_msg_Str);
+			const audioResource=createAudioResource(stream, {inputType: StreamType.Arbitrary, inlineVolume:true});
+			if(!voiceConnection || voiceConnection?.status===VoiceConnectionStatus.Disconnected){
+				voiceConnection = joinVoiceChannel({
+					channelId: msg.member.voice.channelId,
+					guildId: msg.guildId,
+					adapterCreator: msg.guild.voiceAdapterCreator,
+				});
+				voiceConnection=await entersState(voiceConnection, VoiceConnectionStatus.Connecting, 5_000);
+			}
 			
-// 			if(voiceConnection.status===VoiceConnectionStatus.Connected){
-// 				voiceConnection.subscribe(audioPlayer);
-// 				audioPlayer.play(audioResource);
-// 			}
+			if(voiceConnection.status===VoiceConnectionStatus.Connected){
+				voiceConnection.subscribe(audioPlayer);
+				audioPlayer.play(audioResource);
+			}
 
-// 		}
-// 	}
+		}
+	}
 
-// 	if(user_mas === "== command out") {
-// 		connection.destroy();
-// 		voiceConnection = null;
-// 	}
+	if(user_mas === "== command out") {
+		connection.destroy();
+		voiceConnection = null;
+	}
 
-// 	process.on('uncaughtException', function(error) {
-// 		console.log('voice error');
-// 	});
+	process.on('uncaughtException', function(error) {
+		console.log('voice error');
+	});
 
-// });
+});
 
 
 
